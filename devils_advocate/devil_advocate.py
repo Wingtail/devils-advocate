@@ -106,7 +106,7 @@ class Persuader:
     def provide_response(self):
         completion = self.client.chat.completions.create(
             model=self.model,
-            temperature=0.4,
+            temperature=0.2,
             messages=self.messages
         )
         
@@ -116,9 +116,39 @@ class Persuader:
         
         return completion.choices[0].message.content, "AGREE" in completion.choices[0].message.content
 
+def dry_run():
+    client = OpenAI(api_key="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")
+
+    messages = [
+        {"role": "system", "content": "You are a helpful assistant"},
+    ]
+
+    prompt = """
+        As the persuader, it is now time for you to present your final solution to the task at hand. This is your opportunity to showcase the culmination of your arguments, the data and evidence you have collected, and the reasoning you have developed throughout our discussions. Your presentation must be clear and decisive. Include the following in your final solution:
+
+        1. **Solution**: Create a thorough instruction of your proposed solution in a manner that is easy to understand and heavily detailed. Your instruction will be presented to a naive implementer who will only receive your solution as a prompt to directly solve the task. The implementer should solve the task in a way that should satisfy all of the concerns that the questioner had made.
+
+        This is the task:
+
+        Design a Doom themed video game using the C language
+
+    """
+
+    messages.append({"role": "user", "content": prompt})
+    
+    completion = client.chat.completions.create(
+        model="gpt-4",
+        temperature=0.2,
+        messages=messages
+    )
+    
+    messages.append({"role": "assistant", "content": completion.choices[0].message.content})
+    
+    print("One Shot Final Answer: ", completion.choices[0].message.content)
+
 if __name__ == "__main__":
-    questioner = Questioner("<YOUR_OPENAI_API_KEY>")
-    persuader = Persuader("<YOUR_OPENAI_API_KEY>")
+    questioner = Questioner("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")
+    persuader = Persuader("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")
 
     response, is_agree = persuader.provide_response()
 
@@ -136,3 +166,5 @@ if __name__ == "__main__":
     
     questioner.provide_summary()
     persuader.provide_summary()
+
+    # dry_run()
