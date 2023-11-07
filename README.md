@@ -34,4 +34,4 @@ Hopefully this repository can expand this idea and make some super cool discover
 
 This is much of a work in progress. But I wanted to share my ideas and simple code for you all to try it out. It's super simple but surprisingly effective.
 
-- Tested on OpenAI GPT 4 and 3.5 turbo
+- Tested on OpenAI GPT 4 and 3.5 turbo.
